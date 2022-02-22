@@ -1,6 +1,6 @@
 #!/bin/bash
 
-PROG=bin/program.exe
+PROG=bin/a.out
 LOG_FILE=resources/cp_bench.txt
 LIM=1048576
 

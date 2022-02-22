@@ -6,7 +6,7 @@
 #define the source, header, bin, object and resources directories
 SRC_DIR := src
 BIN_DIR := bin
-HDR_DIR := headers
+HDR_DIR := include
 OBJ_DIR := obj
 RSR_DIR := resources
 
@@ -21,7 +21,7 @@ FLAGS := -I$(HDR_DIR) -Wall -Wextra -Wsign-conversion
 #define the source and object files, and executable
 SRC_FILES := $(shell find $(SRC_DIR) -name *.c)
 OBJ_FILES := $(patsubst $(SRC_DIR)/%,$(OBJ_DIR)/%,$(patsubst %.c,%.o,$(SRC_FILES)))
-BIN := $(BIN_DIR)/program
+BIN := $(BIN_DIR)/a.out
 
 
 

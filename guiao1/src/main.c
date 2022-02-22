@@ -57,7 +57,7 @@ int main(const int argc, char const *argv[]){
         if(msg){
             switch(atoi(argv[1])){
 
-            case 1:
+            case 1:   //cp
                 if(argc < 4)
                     exit_code = NOT_ENOUGH_ARGS;
                 else{
@@ -74,13 +74,13 @@ int main(const int argc, char const *argv[]){
                 }
                 break;
 
-            case 2:
+            case 2:   //cat
                 snprintf(msg, MSG_SIZE, "cat\n\n");
                 write(STDOUT_FILENO, msg, strlen(msg));
                 exit_code = cat();
                 break;
 
-            case 3:
+            case 3:   //println
                 if(argc < 3)
                     exit_code = NOT_ENOUGH_ARGS;
                 else{
@@ -90,13 +90,13 @@ int main(const int argc, char const *argv[]){
                 }
                 break;
 
-            case 4:
+            case 4:   //nl
                 snprintf(msg, MSG_SIZE, "nl\n\n");
                 write(STDOUT_FILENO, msg, strlen(msg));
                 exit_code = nl();
                 break;
 
-            case 5:
+            case 5:   //person
                 if(argc < 4)
                     exit_code = NOT_ENOUGH_ARGS;
                 else{

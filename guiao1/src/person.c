@@ -151,7 +151,9 @@ int update_age_index(int age, int index, const char* filename){
 
                 p->age = age;
                 exit_code = lseek(fd, - (long) (sizeof *p), SEEK_CUR) > -1 ? exit_code : IO_ERROR;
-                exit_code = write(fd, p, sizeof *p) == sizeof *p ? exit_code : IO_ERROR;
+
+                if(exit_code == 0)
+                    exit_code = write(fd, p, sizeof *p) == sizeof *p ? exit_code : IO_ERROR;
 
                 delete_person(p);
             }

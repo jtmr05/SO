@@ -128,17 +128,20 @@ int nl(){
     while(buffer && (readln(STDIN_FILENO, ptr, size) > 0)){
         size_t len = strlen(buffer);
 
-        if(len == size - 1){
+        if(len == size - 1){          //possibility that it not read a whole line
             buffer = realloc(buffer, sizeof *buffer * 2 * size);
-            ptr = buffer + size - 1;
+            ptr = buffer + size - 1;                             //start writing at this point
             size *= 2;
         }
         else{
-            const size_t line_info_size = 16;
-            char line_info[line_info_size];
 
-            snprintf(line_info, line_info_size, "\t %u. ", current_line++);
-            write(STDOUT_FILENO, line_info, strlen(line_info));
+            if(len > 0){
+                const size_t line_info_size = 16;
+                char line_info[line_info_size];
+                snprintf(line_info, line_info_size, "\t %u ", current_line++);
+                write(STDOUT_FILENO, line_info, strlen(line_info));
+            }
+
             write(STDOUT_FILENO, buffer, len);
             write(STDOUT_FILENO, "\n", 1);
             ptr = buffer;
