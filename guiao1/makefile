@@ -3,32 +3,37 @@
 # ----------//----------
 
 
-#define the source, header, bin, object and resources directories
-SRC_DIR := src
-BIN_DIR := bin
-HDR_DIR := include
-OBJ_DIR := obj
-RSR_DIR := resources
+#directories
+SRC_DIR 		:= src
+BIN_DIR 		:= bin
+HDR_DIR 		:= include
+OBJ_DIR 		:= obj
+RSR_DIR 		:= resources
 
-#define the compiler
-CC := gcc
+#compiler
+CC 				:= gcc
+
+
+
+
+#files
+SRC_FILES 		:= $(shell find $(SRC_DIR) -name *.c)
+OBJ_FILES 		:= $(patsubst $(SRC_DIR)/%,$(OBJ_DIR)/%,$(patsubst %.c,%.o,$(SRC_FILES)))
+BIN 			:= $(BIN_DIR)/a.out
+
 
 #compiler flags
-FLAGS := -I$(HDR_DIR) -Wall -Wextra -Wsign-conversion
+FLAGS 			:= -I$(HDR_DIR) -Wall -Wextra -Wsign-conversion
 
-
-
-#define the source and object files, and executable
-SRC_FILES := $(shell find $(SRC_DIR) -name *.c)
-OBJ_FILES := $(patsubst $(SRC_DIR)/%,$(OBJ_DIR)/%,$(patsubst %.c,%.o,$(SRC_FILES)))
-BIN := $(BIN_DIR)/a.out
 
 
 
 #make default goal (using make with no specified recipe)
-.DEFAULT_GOAL := $(BIN)
+.DEFAULT_GOAL 	:= all
 
-build: clean $(BIN)
+all: $(BIN)
+
+build: clean all
 
 $(BIN): $(OBJ_FILES)
 	$(CC) $(FLAGS) $^ -o $@
