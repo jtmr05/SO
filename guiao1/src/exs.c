@@ -124,16 +124,19 @@ int nl(){
     size_t size = DEFAULT_BUFFER_SIZE;
     char* buffer = malloc(sizeof *buffer * size);
     char* ptr = buffer;
-
-    while(buffer && (readln(STDIN_FILENO, ptr, size) > 0)){
+    int has_realloc = 1;
+    
+    while(buffer && (readln(STDIN_FILENO, ptr, size / has_realloc) > 0)){
         size_t len = strlen(buffer);
 
         if(len == size - 1){          //possibility that it not read a whole line
             buffer = realloc(buffer, sizeof *buffer * 2 * size);
             ptr = buffer + size - 1;                             //start writing at this point
             size *= 2;
+            has_realloc = 2;
         }
         else{
+            has_realloc = 1;
 
             if(len > 0){
                 const size_t line_info_size = 16;
