@@ -6,7 +6,7 @@
 #define the source, header, bin and object files directories
 SRC_DIR := src
 BIN_DIR := bin
-HDR_DIR := headers
+HDR_DIR := include
 OBJ_DIR := obj
 
 #define the compiler
