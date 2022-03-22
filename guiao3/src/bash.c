@@ -7,10 +7,11 @@ void bash(){
     char* in_buffer = malloc(sizeof *in_buffer * size), *ptr = in_buffer;
     int bytes_read;
     uint has_realloc = 1;
+    bool exit = false;
 
     write(STDOUT_FILENO, "$ ", 2);
 
-    while((bytes_read = read(STDIN_FILENO, ptr, size / has_realloc)) > 0){
+    while(!exit && (bytes_read = read(STDIN_FILENO, ptr, size / has_realloc)) > 0){
 
 
         char *nl;
@@ -26,10 +27,13 @@ void bash(){
             ptr = in_buffer;
             *nl = '\0';
 
-            mysystem(in_buffer);
+            exit = strcmp("exit", in_buffer) == 0;
+
+            if(!exit)
+                mysystem(in_buffer);
         }
 
-        if(has_realloc == 1)
+        if(has_realloc == 1 && !exit)
             write(STDOUT_FILENO, "$ ", 2);
     }
 
