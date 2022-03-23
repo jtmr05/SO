@@ -3,7 +3,9 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <sys/wait.h>
+
 #include "bash.h"
+#include "controller.h"
 
 void ls(){
     const char *args[] = {"ls", "-l", NULL};
@@ -96,6 +98,14 @@ int main(int argc, char** argv){
         case 5:
             bash();
             break;
+
+        case 6:{
+            if(argc > 2)
+                controller(argc - 2, argv + 2);
+            else
+                fprintf(stderr, "Not enough args.\n");
+            break;
+        }
 
         default:
             fprintf(stderr, "Unknown option.");

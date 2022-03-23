@@ -48,6 +48,7 @@ $(OBJ_FILES): $(OBJ_DIR)/%.o : $(SRC_DIR)/%.c
 clean:
 	-rm -rf $(OBJ_DIR)/*
 	-rm -rf $(BIN_DIR)/*
+	-rm a.sh b.sh c.sh nums.txt
 
 run:
 	@$(BIN)
