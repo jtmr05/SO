@@ -1,7 +1,7 @@
 #!/bin/bash
 
 
-echo -e """#!/bin/bash
+echo  """#!/bin/bash
 
 RANGE=\$((5))
 
