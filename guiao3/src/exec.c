@@ -108,7 +108,7 @@ int main(int argc, char** argv){
         }
 
         default:
-            fprintf(stderr, "Unknown option.");
+            fprintf(stderr, "Unknown option.\n");
             break;
         }
     }

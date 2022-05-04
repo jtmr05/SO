@@ -227,7 +227,7 @@ void lookup_in_file(){
                     const int fd_read = open("resources/matrix.bin", O_RDONLY | O_BINARY);
 
                     if(fd_read > -1){
-                        lseek(fd_read, i * collumns * sizeof(int), SEEK_SET);
+                        lseek(fd_read, i * (ssize_t) (collumns * sizeof(int)), SEEK_SET);
                         int *p = malloc(sizeof *p);
 
                         uint j;

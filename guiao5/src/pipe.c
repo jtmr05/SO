@@ -160,12 +160,15 @@ int ex4(){
 }
 
 
-int ex5(){
+int ex5(const char** commands, size_t number_of_commands){
 
-    int pipe1[2] = {}, pipe2[2] = {}, pipe3[2] = {};
-    pipe(pipe1); pipe(pipe2); pipe(pipe3);
+    const size_t number_of_pipes = number_of_commands - 1;
+    int pipe_matrix[number_of_pipes][2];
 
-    for(int i = 0; i < 4; ++i){
+    for(unsigned p = 0; p < number_of_pipes; ++p)
+        pipe(pipe_matrix[p]);
+
+    for(unsigned i = 0; i < number_of_commands; ++i){
 
         switch(fork()){
 
@@ -173,51 +176,38 @@ int ex5(){
             exit(-1);
 
         case 0:
-            switch(i){
 
-            case 0:
-                dup2(pipe1[1], STDOUT_FILENO);
+            if(i == 0)
+                dup2(pipe_matrix[i][1], STDOUT_FILENO);
 
-                close(pipe1[0]); close(pipe1[1]); close(pipe2[0]); close(pipe2[1]); close(pipe3[0]); close(pipe3[1]);
+            else if (i == number_of_commands - 1)
+                dup2(pipe_matrix[i - 1][0], STDIN_FILENO);
 
-                execlp("grep", "grep", "-v", "^#", "/etc/passwd", NULL);
-                _exit(1);
-
-            case 1:
-                dup2(pipe1[0], STDIN_FILENO);
-                dup2(pipe2[1], STDOUT_FILENO);
-
-                close(pipe1[0]); close(pipe1[1]); close(pipe2[0]); close(pipe2[1]); close(pipe3[0]); close(pipe3[1]);
-
-                execlp("cut", "cut", "-f7", "-d:", NULL);
-                _exit(1);
-
-            case 2:
-                dup2(pipe2[0], STDIN_FILENO);
-                dup2(pipe3[1], STDOUT_FILENO);
-
-                close(pipe1[0]); close(pipe1[1]); close(pipe2[0]); close(pipe2[1]); close(pipe3[0]); close(pipe3[1]);
-
-                execlp("uniq", "uniq", NULL);
-                _exit(1);
-
-            case 3:
-                dup2(pipe3[0], STDIN_FILENO);
-
-                close(pipe1[0]); close(pipe1[1]); close(pipe2[0]); close(pipe2[1]); close(pipe3[0]); close(pipe3[1]);
-
-                execlp("wc", "wc", "-l", NULL);
-                _exit(1);
+            else{
+                dup2(pipe_matrix[i - 1][0], STDIN_FILENO);
+                dup2(pipe_matrix[i][1], STDOUT_FILENO);
             }
+
+
+            for(unsigned p = 0; p < number_of_pipes; ++p)
+                for(unsigned j = 0; j < 2; ++j)
+                    close(pipe_matrix[p][j]);
+
+            system(commands[i]);
+            exit(0);
+
+            break;
 
         default:
             break;
         }
     }
 
-    close(pipe1[0]); close(pipe1[1]); close(pipe2[0]); close(pipe2[1]); close(pipe3[0]); close(pipe3[1]);
+    for(unsigned p = 0; p < number_of_pipes; ++p)
+        for(unsigned j = 0; j < 2; ++j)
+            close(pipe_matrix[p][j]);
 
-    for(int i = 0; i < 4; ++i)
+    for(unsigned w = 0; w < number_of_commands; ++w)
         wait(NULL);
 
     return 0;
@@ -246,7 +236,10 @@ int main(int argc, const char** argv){
             break;
 
         case 5:
-            exit_code = ex5();
+            const size_t num_of_commands = 4;
+            const char* commands[] = {"grep -v ^# /etc/passwd", "cut -f7 -d:", "uniq", "wc -l"};
+
+            exit_code = ex5(commands, num_of_commands);
             break;
 
         default:

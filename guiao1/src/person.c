@@ -37,7 +37,7 @@ int add_person(int age, const char* name, const char* filename){
                 const ssize_t offset = lseek(fd, 0, SEEK_CUR);
 
                 if(offset >= 0){
-                    snprintf(str, 40, "registo %llu\n", ((size_t) offset / sizeof *p) - 1);
+                    snprintf(str, 40, "registo %lu\n", ((size_t) offset / sizeof *p) - 1);
                     exit_code = write(STDOUT_FILENO, str, strlen(str)) > -1 ? exit_code : IO_ERROR;
                 }
                 else
@@ -145,7 +145,7 @@ int update_age_index(int age, int index, const char* filename){
             Person p = new_person(0, "");
 
             if(p){
-                size_t offset = (size_t) index * sizeof *p;
+                ssize_t offset = index * (ssize_t) sizeof *p;
                 exit_code = lseek(fd, offset, SEEK_SET) > -1 ? exit_code : IO_ERROR;
                 exit_code = read(fd, p, sizeof *p) == sizeof *p ? exit_code : IO_ERROR;
 

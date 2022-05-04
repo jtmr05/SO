@@ -53,7 +53,7 @@ void ex1_2_3(){
     printf("terminei\n");
 }
 
-int redir(int argc, const char** argv){
+int redir(int argc, char const** argv){
 
     bool is_valid = true;
 
@@ -131,7 +131,7 @@ int redir(int argc, const char** argv){
     return 1;
 }
 
-int main(int argc, const char** argv){
+int main(int argc, char const **argv){
 
     if(argc > 1){
 

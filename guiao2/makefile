@@ -6,8 +6,9 @@
 #directories
 SRC_DIR 		:= src
 BIN_DIR 		:= bin
-HDR_DIR 		:= include
+INC_DIR 		:= include
 OBJ_DIR 		:= obj
+RSR_DIR 		:= resources
 
 #compiler
 CC 				:= gcc
@@ -22,7 +23,7 @@ BIN 			:= $(BIN_DIR)/a.out
 
 
 #compiler flags
-FLAGS 			:= -I$(HDR_DIR) -Wall -Wextra -Wsign-conversion -O2
+FLAGS 			:= -I$(INC_DIR) -Wall -Wextra -Wsign-conversion
 
 
 
@@ -35,6 +36,7 @@ all: $(BIN)
 build: clean all
 
 $(BIN): $(OBJ_FILES)
+	@mkdir -p $(@D)
 	$(CC) $(FLAGS) $^ -o $@
 
 #generate each object file according to the corresponding source file
@@ -51,11 +53,15 @@ $(OBJ_FILES): $(OBJ_DIR)/%.o : $(SRC_DIR)/%.c
 .PHONY: clean run init
 
 clean:
-	-rm -rf $(OBJ_DIR)/*
-	-rm -rf $(BIN_DIR)/*
+	-rm -rf $(OBJ_DIR)
+	-rm -rf $(BIN_DIR)
+
+run:
+	@$(BIN)
 
 init:
 	-mkdir $(SRC_DIR)
-	-mkdir $(HDR_DIR)
+	-mkdir $(INC_DIR)
 	-mkdir $(OBJ_DIR)
 	-mkdir $(BIN_DIR)
+	-mkdir $(RSR_DIR)

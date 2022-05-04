@@ -47,7 +47,7 @@ uint monitor(const char* command){
                 else if(WEXITSTATUS(status) == 255)
                     return 0;
             }
-            counter++;
+            ++counter;
         }
     }
 

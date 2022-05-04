@@ -124,8 +124,8 @@ int nl(){
     size_t size = DEFAULT_BUFFER_SIZE;
     char* buffer = malloc(sizeof *buffer * size);
     char* ptr = buffer;
-    int has_realloc = 1;
-    
+    unsigned has_realloc = 1;
+
     while(buffer && (readln(STDIN_FILENO, ptr, size / has_realloc) > 0)){
         size_t len = strlen(buffer);
 
